@@ -392,7 +392,7 @@ while game_is_on:
                 ball.hideturtle()
                 menu.show_game_over(winner_name)
 
-    elif game_state == "PAUSED":
+    elif game_state == "PAUSED" or game_state == "GAME_OVER":
         screen.update()
 
 screen.exitonclick()
