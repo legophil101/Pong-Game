@@ -10,11 +10,15 @@ This version includes improvements for a better gameplay experience:
 - Ball no longer sticks to paddles
 - Sound effects for bouncing and scoring
 - Live score tracking
+- Menu system for selecting game mode and CPU difficulty
 
 ---
 
 ## Features
-- Two-player local multiplayer
+- **Single-player mode** with CPU opponent
+  - Choose **Easy, Medium, or Hard** difficulty
+  - CPU has **human-like behavior** with reaction margin, speed, and occasional hesitation
+- **Two-player local multiplayer**
 - Smooth and responsive paddle movement
 - Ball collision with walls and paddles
 - Gradual ball speed increase after paddle hits
@@ -26,6 +30,8 @@ This version includes improvements for a better gameplay experience:
 ## Controls
 - **Right Paddle:** Arrow Up / Arrow Down  
 - **Left Paddle:** W / S  
+- **Pause Game:** P  
+- **Menu Selection:** 1 (1P), 2 (2P), E (Easy), M (Medium), H (Hard)
 
 ---
 
