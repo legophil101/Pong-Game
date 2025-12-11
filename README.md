@@ -15,23 +15,40 @@ This version includes improvements for a better gameplay experience:
 ---
 
 ## Features
-- **Single-player mode** with CPU opponent
-  - Choose **Easy, Medium, or Hard** difficulty
-  - CPU has **human-like behavior** with reaction margin, speed, and occasional hesitation
-- **Two-player local multiplayer**
-- Smooth and responsive paddle movement
-- Ball collision with walls and paddles
-- Gradual ball speed increase after paddle hits
-- Scoreboard display with live scoring
-- Sound effects for paddle bounce and scoring
 
----
+- **Single-player vs CPU** with three difficulty levels: Easy, Medium, Hard
+- **Two-player mode**
+- **Customizable match length**: first to 3, 5, 7, or 10 points
+- **Pause and restart** functionality
+- **Context-aware menu navigation** (Main Menu → Match Length → CPU Difficulty)
+- **Sound effects** for ball bounce and scoring
+- **Smooth paddle movement** with continuous key press support
 
 ## Controls
-- **Right Paddle:** Arrow Up / Arrow Down  
-- **Left Paddle:** W / S  
-- **Pause Game:** P  
-- **Menu Selection:** 1 (1P), 2 (2P), E (Easy), M (Medium), H (Hard)
+
+**Player 1 / CPU (left paddle):**  
+- Up: `W`  
+- Down: `S`  
+
+**Player 1 / Player 2 (right paddle):**  
+- Up: `Up Arrow`  
+- Down: `Down Arrow`  
+
+**Global / Context Keys:**  
+- `Escape` → Pause / Resume  
+- `B` → Back (in menu or pause screen)  
+- `R` → Resume from pause  
+- `T` → Restart match from pause  
+- `N` → Restart match after game over  
+- `M` → Medium CPU difficulty / go to main menu  
+
+**Menu Keys:**  
+- `1` → Player vs CPU  
+- `2` → Player vs Player  
+- `E` → Easy CPU  
+- `M` → Medium CPU  
+- `H` → Hard CPU  
+- `3, 5, 7, 0` → Match length (First to 3, 5, 7, or 10)
 
 ---
 
