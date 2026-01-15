@@ -9,8 +9,12 @@ import random
 
 # Initialize pygame mixer for sound effects
 pygame.mixer.init()
+intro_sound = pygame.mixer.Sound("pong_game_intro.wav")
 bounce_sound = pygame.mixer.Sound("bounce.wav")
 score_sound = pygame.mixer.Sound("score.wav")
+wall_sound = pygame.mixer.Sound("wall.wav")
+win_sound = pygame.mixer.Sound("win.wav")
+lose_sound = pygame.mixer.Sound("lose.wav")
 
 # ----------------------------------------------
 # SETUP: initialize the screen and all game objects
@@ -41,7 +45,7 @@ def pick_1p():
     global game_state
     if game_state == "MENU" and menu.selected_mode is None:
         menu.select_1p()
-        menu.match_length_options()  # First: points selection
+        menu.show_ball_mode_menu()
 
 
 def pick_2p():
@@ -49,6 +53,19 @@ def pick_2p():
     global game_state
     if game_state == "MENU" and menu.selected_mode is None:
         menu.select_2p()
+        menu.show_ball_mode_menu()
+
+
+def classic_mode():
+    # Ensure this only works on the correct screen
+    if game_state == "MENU" and menu.current_screen == "BALL_MODE":
+        menu.set_classic()
+        menu.match_length_options()  # This sets current_screen to "LENGTH"
+
+
+def modern_mode():
+    if game_state == "MENU" and menu.current_screen == "BALL_MODE":
+        menu.set_modern()
         menu.match_length_options()
 
 
@@ -76,12 +93,13 @@ def hard():
 # ----------------------------------------------
 # Helper function to handle point selection logic
 def set_points(points):
-    if game_state == "MENU" and menu.selected_mode is not None:
+    # FIX: Added check for menu.current_screen == "LENGTH"
+    if game_state == "MENU" and menu.current_screen == "LENGTH":
         menu.match_points = points
         if menu.selected_mode == "P1":
-            menu.show_cpu_options()  # This sets current_screen to "DIFFICULTY"
+            menu.show_cpu_options()  # Moves to "DIFFICULTY"
         else:
-            start_game()  # P2 starts immediately after picking points
+            start_game()  # P2 starts immediately
 
 
 def pick_3(): set_points(3)
@@ -128,13 +146,14 @@ def move_cpu():
 def start_game():
     """Clear menu and start the actual game."""
     global game_state, r_paddle, l_paddle, ball, scoreboard
+    intro_sound.stop()  # STOP MENU MUSIC HERE
     menu.clear_menu()
     game_state = "PLAYING"
 
     # Create game objects now (only once)
     r_paddle = Paddle((350, 0))
     l_paddle = Paddle((-350, 0))
-    ball = Ball()
+    ball = Ball(mode=menu.ball_mode)
     scoreboard = Scoreboard()
 
 
@@ -215,6 +234,7 @@ def restart_match():
 
 def pause_to_main_menu():
     global game_state
+    intro_sound.stop()
     game_state = "MENU"
     try:
         r_paddle.hideturtle()
@@ -238,10 +258,13 @@ def pause_back():
 # ----------------------------------------------
 # CONTEXT AWARE KEYS
 # ----------------------------------------------
+# Update handle_m_key to be more precise
 def handle_m_key():
     if game_state == "PAUSED" or game_state == "GAME_OVER":
         pause_to_main_menu()
-    elif game_state == "MENU":
+    elif menu.current_screen == "BALL_MODE":
+        modern_mode()
+    elif menu.current_screen == "DIFFICULTY":  # Specific check added
         medium()
 
 
@@ -249,16 +272,25 @@ def handle_b_key():
     """Context-aware back button for Pause and Menu navigation."""
     if game_state == "PAUSED":
         resume_game()
+
     elif game_state == "MENU":
+
         if menu.current_screen == "DIFFICULTY":
-            # Go back one step: Difficulty -> Match Length
+            # Difficulty -> Match Length
             menu.match_length_options()
+
         elif menu.current_screen == "LENGTH":
-            # Go back one step: Match Length -> Main Menu
-            menu.selected_mode = None  # Must reset the selected mode
+            # Match Length -> Ball Mode
+            menu.show_ball_mode_menu()
+
+        elif menu.current_screen == "BALL_MODE":
+            # Ball Mode -> Main Menu
+            menu.selected_mode = None
+            menu.ball_mode = None
             menu.show_main_menu()
+
         elif menu.current_screen == "MAIN":
-            # Already at main menu, do nothing
+            # Already at main menu
             pass
 
 
@@ -284,7 +316,7 @@ def handle_n_key():
 # ----------------------------------------------
 screen.listen()
 
-# Movement
+# Movement (Always active, but paddles only move if PLAYING)
 screen.onkeypress(r_up_press, "Up")
 screen.onkeyrelease(r_up_release, "Up")
 screen.onkeypress(r_down_press, "Down")
@@ -294,24 +326,22 @@ screen.onkeyrelease(l_up_release, "w")
 screen.onkeypress(l_down_press, "s")
 screen.onkeyrelease(l_down_release, "s")
 
-# Global Controls
+# Contextual Menu & System Keys
 screen.onkey(toggle_pause, "Escape")
-screen.onkey(pause_back, "b")
-
-# Context Keys
-screen.onkey(handle_m_key, "m")
-screen.onkey(handle_b_key, "b")
+screen.onkey(handle_b_key, "b")  # Handles both "back" and "resume"
+screen.onkey(handle_m_key, "m")  # Handles Modern Mode AND Medium Difficulty
 screen.onkey(handle_r_key, "r")
-screen.onkey(handle_t_key, "t")  # Used handler to prevent menu restart
+screen.onkey(handle_t_key, "t")
+screen.onkey(handle_n_key, "n")
 
-# Menu Selection
+# Mode Selection
 screen.onkey(pick_1p, "1")
 screen.onkey(pick_2p, "2")
+screen.onkey(classic_mode, "c")
 screen.onkey(easy, "e")
 screen.onkey(hard, "h")
-screen.onkey(handle_n_key, "n")  # Used handler to prevent new game  while playing
 
-# Match Length
+# Match Length (The numbers)
 screen.onkey(pick_3, "3")
 screen.onkey(pick_5, "5")
 screen.onkey(pick_7, "7")
@@ -329,6 +359,7 @@ while game_is_on:
         if not menu_drawn:
             menu.clear()
             menu.show_main_menu()
+            intro_sound.play(loops=-1)
             menu_drawn = True
         continue
     else:
@@ -350,13 +381,13 @@ while game_is_on:
         if ball.ycor() > 280 or ball.ycor() < -280:
             ball.bounce_y()
             bounce_sound.stop();
-            bounce_sound.play()
+            wall_sound.play()
 
         # Paddles
         if (ball.distance(r_paddle) < 50 and ball.xcor() > 320) or \
                 (ball.distance(l_paddle) < 50 and ball.xcor() < -320):
             ball.increase_speed()
-            ball.bounce_x()
+            ball.bounce_x(r_paddle if ball.xcor() > 0 else l_paddle)
             if ball.xcor() > 0:
                 ball.setx(r_paddle.xcor() - 50)
             else:
@@ -365,33 +396,37 @@ while game_is_on:
             bounce_sound.play()
 
         # Scoring
-        if ball.xcor() > 400:
+        # Scoring Logic (Inside the while loop)
+        if ball.xcor() > 400:  # Ball passed Right Player (P1)
             ball.reset_position()
             scoreboard.l_point()
             score_sound.play()
-            # CHECK FOR WINNER
             if scoreboard.l_score >= menu.match_points:
                 game_state = "GAME_OVER"
-                winner_name = "CPU" if menu.selected_mode == "P1" else "Player 1"
-                # Hide game objects
-                r_paddle.hideturtle()
-                l_paddle.hideturtle()
+                # If P1 mode, Left Paddle is CPU
+                winner_name = "CPU" if menu.selected_mode == "P1" else "Player 2"
+                r_paddle.hideturtle();
+                l_paddle.hideturtle();
                 ball.hideturtle()
+
+                if winner_name == "CPU":
+                    lose_sound.play()
+                else:
+                    win_sound.play()
                 menu.show_game_over(winner_name)
-        elif ball.xcor() < -400:
+
+        elif ball.xcor() < -400:  # Ball passed Left Player (CPU/P2)
             ball.reset_position()
             scoreboard.r_point()
             score_sound.play()
-            # CHECK FOR WINNER
             if scoreboard.r_score >= menu.match_points:
                 game_state = "GAME_OVER"
-                winner_name = "Player 1" if menu.selected_mode == "P1" else "Player 2"
-                # Hide game objects
-                r_paddle.hideturtle()
-                l_paddle.hideturtle()
+                winner_name = "Player 1"
+                r_paddle.hideturtle();
+                l_paddle.hideturtle();
                 ball.hideturtle()
+                win_sound.play()  # Player 1 always wins here
                 menu.show_game_over(winner_name)
-
     elif game_state == "PAUSED" or game_state == "GAME_OVER":
         screen.update()
 

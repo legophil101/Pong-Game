@@ -17,6 +17,8 @@ class Menu(Turtle):
         self.selected_mode = None
         self.match_points = 0
 
+        self.ball_mode = None  # "CLASSIC" or "MODERN"
+
         # Will store difficulty level if P1 mode is chosen.
         # Could be "Easy", "Medium", or "Hard".
         self.cpu_difficulty = None
@@ -155,6 +157,28 @@ class Menu(Turtle):
         self.write("Press N to Restart Match", align="center", font=("Courier", 20, "normal"))
         self.goto(0, -60)
         self.write("Press M for Main Menu", align="center", font=("Courier", 20, "normal"))
+
+    # ----------------------------------------------------------- #
+    # BALL MENU
+    # ----------------------------------------------------------- #
+    def show_ball_mode_menu(self):
+        self.clear()
+        self.current_screen = "BALL_MODE"
+
+        self.goto(0, 100)
+        self.write("Ball Physics", align="center", font=("Courier", 30, "bold"))
+
+        self.goto(0, 0)
+        self.write("Press C for Classic", align="center", font=("Courier", 20))
+
+        self.goto(0, -40)
+        self.write("Press M for Modern", align="center", font=("Courier", 20))
+
+    def set_classic(self):
+        self.ball_mode = "CLASSIC"
+
+    def set_modern(self):
+        self.ball_mode = "MODERN"
 
     # ----------------------------------------------------------- #
     # CLEAR MENU
