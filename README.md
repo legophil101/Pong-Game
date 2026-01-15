@@ -2,53 +2,81 @@
 
 ![Pong Game Demo](pong_demo.gif)
 
-A classic **Pong game** built in Python using the `turtle` module, featuring **OOP structure**, **smooth two-player controls**, and **sound effects** with `pygame`.
+A classic **Pong game** built entirely from scratch in Python using the `turtle` module, featuring a clean **OOP architecture**, **state-based game flow**, **CPU AI**, and **dynamic sound effects** powered by `pygame`.
 
-This version includes improvements for a better gameplay experience:
-- Smooth, continuous paddle movement for two players
-- Paddles cannot move off-screen
-- Ball no longer sticks to paddles
-- Sound effects for bouncing and scoring
-- Live score tracking
-- Menu system for selecting game mode and CPU difficulty
+This project evolved from a basic Pong clone into a fully featured, polished game with menus, difficulty selection, and replayability in mind.
 
 ---
 
 ## Features
 
-- **Single-player vs CPU** with three difficulty levels: Easy, Medium, Hard
+- **Single-player vs CPU** with three difficulty levels:
+  - Easy
+  - Medium
+  - Hard
 - **Two-player mode**
-- **Customizable match length**: first to 3, 5, 7, or 10 points
-- **Pause and restart** functionality
-- **Context-aware menu navigation** (Main Menu → Match Length → CPU Difficulty)
-- **Sound effects** for ball bounce and scoring
-- **Smooth paddle movement** with continuous key press support
+- **Ball physics modes**
+  - **Classic Mode** – traditional Pong-style predictable angles
+  - **Modern Mode** – more dynamic and unpredictable ball behavior
+- **Customizable match length**
+  - First to 3, 5, 7, or 10 points
+- **Full menu system**
+  - Main Menu
+  - Ball Mode Selection
+  - Match Length Selection
+  - CPU Difficulty Selection
+  - Pause Menu
+  - Game Over Screen
+- **Sound effects & music**
+  - Intro music
+  - Paddle bounce
+  - Wall bounce
+  - Scoring sound
+  - Win / Lose sounds
+- **Pause, resume, restart, and replay support**
+- **Smooth paddle movement**
+  - Continuous movement with key press + release handling
+- **CPU AI**
+  - Reaction delay
+  - Hesitation
+  - Difficulty-based movement speed
+
+---
 
 ## Controls
 
-**Player 1 / CPU (left paddle):**  
-- Up: `W`  
-- Down: `S`  
+### Player Controls
 
-**Player 1 / Player 2 (right paddle):**  
-- Up: `Up Arrow`  
-- Down: `Down Arrow`  
+**Left Paddle (Player 1 / CPU):**
+- `W` → Move up
+- `S` → Move down
 
-**Global / Context Keys:**  
-- `Escape` → Pause / Resume  
-- `B` → Back (in menu or pause screen)  
-- `R` → Resume from pause  
-- `T` → Restart match from pause  
-- `N` → Restart match after game over  
-- `M` → Medium CPU difficulty / go to main menu  
+**Right Paddle (Player 1 / Player 2):**
+- `↑` → Move up
+- `↓` → Move down
 
-**Menu Keys:**  
-- `1` → Player vs CPU  
-- `2` → Player vs Player  
-- `E` → Easy CPU  
-- `M` → Medium CPU  
-- `H` → Hard CPU  
-- `3, 5, 7, 0` → Match length (First to 3, 5, 7, or 10)
+---
+
+### Global / Context-Aware Keys
+
+- `Escape` → Pause / Resume
+- `B` → Back (menu navigation or resume from pause)
+- `R` → Resume from pause
+- `T` → Restart match (from pause)
+- `N` → Start new match (after game over)
+- `M` → Medium CPU difficulty / Return to main menu (context-based)
+
+---
+
+### Menu Selection Keys
+
+- `1` → Player vs CPU
+- `2` → Player vs Player
+- `C` → Classic Ball Mode
+- `M` → Modern Ball Mode
+- `E` → Easy CPU
+- `H` → Hard CPU
+- `3`, `5`, `7`, `0` → Match length (3, 5, 7, or 10 points)
 
 ---
 
