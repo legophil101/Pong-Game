@@ -38,22 +38,35 @@ class Ball(Turtle):
             return
 
         # ----- MODERN PHYSICS -----
-        # Calculate hit position (-1 to 1)
+
+        # Hit position relative to paddle center (-1 to 1)
         offset = (self.ycor() - paddle.ycor()) / 50
         offset = max(-1, min(1, offset))
 
-        angle = offset * 60  # max 60 degrees
+        # Max bounce angle
+        angle = offset * 60
         rad = math.radians(angle)
 
+        # Preserve total speed (important fix)
+        current_speed = math.sqrt(self.x_move ** 2 + self.y_move ** 2)
+        speed = min(self.max_speed, current_speed + 0.5)
+
+        # Determine horizontal direction
         direction = -1 if self.x_move > 0 else 1
 
-        speed = min(self.max_speed, abs(self.x_move) + 0.5)
-
+        # Recalculate velocity components
         self.x_move = speed * math.cos(rad) * direction
         self.y_move = speed * math.sin(rad)
 
-        # Add tiny randomness
-        self.y_move += random.uniform(-0.5, 0.5)
+        # Very small randomness to avoid patterns (safe)
+        self.y_move += random.uniform(-0.3, 0.3)
+
+        # ✅ IMPORTANT: push ball outside paddle to prevent re-collision
+        buffer = 15
+        if direction == -1:  # Hit right paddle
+            self.setx(paddle.xcor() - buffer)
+        else:  # Hit left paddle
+            self.setx(paddle.xcor() + buffer)
 
     def reset_position(self):
         """Reset ball to center and reset speed."""

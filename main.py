@@ -9,12 +9,12 @@ import random
 
 # Initialize pygame mixer for sound effects
 pygame.mixer.init()
-intro_sound = pygame.mixer.Sound("pong_game_intro.wav")
-bounce_sound = pygame.mixer.Sound("bounce.wav")
-score_sound = pygame.mixer.Sound("score.wav")
-wall_sound = pygame.mixer.Sound("wall.wav")
-win_sound = pygame.mixer.Sound("win.wav")
-lose_sound = pygame.mixer.Sound("lose.wav")
+intro_sound = pygame.mixer.Sound("sounds/pong_game_intro.wav")
+bounce_sound = pygame.mixer.Sound("sounds/bounce.wav")
+score_sound = pygame.mixer.Sound("sounds/score.wav")
+wall_sound = pygame.mixer.Sound("sounds/wall.wav")
+win_sound = pygame.mixer.Sound("sounds/win.wav")
+lose_sound = pygame.mixer.Sound("sounds/lose.wav")
 
 # ----------------------------------------------
 # SETUP: initialize the screen and all game objects

@@ -17,7 +17,7 @@ This project evolved from a basic Pong clone into a fully featured, polished gam
 - **Two-player mode**
 - **Ball physics modes**
   - **Classic Mode** – traditional Pong-style predictable angles
-  - **Modern Mode** – more dynamic and unpredictable ball behavior
+  - **Modern Mode** – angle-based paddle collisions with dynamic, less predictable ball trajectories
 - **Customizable match length**
   - First to 3, 5, 7, or 10 points
 - **Full menu system**
@@ -28,6 +28,7 @@ This project evolved from a basic Pong clone into a fully featured, polished gam
   - Pause Menu
   - Game Over Screen
 - **Sound effects & music**
+  - All audio assets are organized inside a dedicated `sounds/` directory.
   - Intro music
   - Paddle bounce
   - Wall bounce
@@ -82,13 +83,12 @@ This project evolved from a basic Pong clone into a fully featured, polished gam
 
 ## How to Run
 1. Clone the repository:
-
 ```bash
 git clone https://github.com/legophil101/Pong-Game.git
 ```
 2. Navigate to the project folder:
 ```bash
-cd pong_game
+cd Pong-Game
 ```
 3. Install dependencies:
 ```bash
