@@ -84,15 +84,15 @@ This project evolved from a basic Pong clone into a fully featured, polished gam
 ## How to Run
 1. Clone the repository:
 ```bash
-git clone https://github.com/legophil101/Pong-Game.git
+git clone https://github.com/legophil101/pong-game.git
 ```
 2. Navigate to the project folder:
 ```bash
-cd Pong-Game
+cd pong-game
 ```
 3. Install dependencies:
 ```bash
-pip install pygame
+pip install -r requirements.txt
 ```
 4. Run the game:
 ```bash
